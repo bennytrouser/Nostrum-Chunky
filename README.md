@@ -1,7 +1,8 @@
 # Nostrum-Chunky
-An MX Spaced 32 key Split KB using Seeed Xiao BLE
+An MX Spaced 32 key Split KB using Seeed Xiao BLE.
 
 - Created with the [ergogen](https://github.com/ergogen/ergogen) and KiCad9. Case files created with Autodesk Fusion360.
+- Footprints for both MX and Choc V2 switches (Currently case only for MX)
 - Firmware using ZMK, including the RGB Widget module from [Caksoylar](https://github.com/caksoylar/zmk-rgbled-widget)
 - Inspiration from the [Hummingbird](https://github.com/PJE66/hummingbird) style [Berylline](https://github.com/jcmkk3/trochilidae#berylline) by [jcmkk3](https://github.com/jcmkk3)
 
@@ -25,7 +26,7 @@ The case is joins together with 3x2 magnets for easy disassembly and access to t
 There should be enough space for the larger 402030 lipo in both sides, but I used what I had available, and the right half uses far less power anyway.
 
 ### Lesson Learned
-Unlike previous builds that relied almost entirely on Ergogen to create the PCB, this time I left all the nets blank in Ergogen and used a schematic in Kicad. But I made a mistake and accidentally assigned SOD-523 diodes instead of SOD-123. These are significantly smaller, so if you want to copy, take inspiration, I would highly recommend not using them. If in the unlikely event you want to order the board for yourself, do yourself a favour and swap to SOD-123 and re-route. Unless you like soldering with a digital magnifier. See pic for scale next to SOD-123.
+Unlike previous builds that relied almost entirely on Ergogen to create the PCB, this time I left all the nets blank in Ergogen and used a schematic in Kicad. But I made a mistake and accidentally assigned SOD-523 diodes instead of SOD-123. These are significantly smaller, so if you want to copy or take inspiration, I would highly recommend not using them! If in the unlikely event you want to order the board for yourself, do yourself a favour and swap to SOD-123 and re-route. Unless you like soldering with a digital microscope. See pic for scale next to SOD-123.
 
 ![](Pics/diodes.jpg)
 
