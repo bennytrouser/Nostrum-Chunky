@@ -1,0 +1,407 @@
+units:
+  capx: 18.1
+  capy: 18.1
+  thumbcapx: 27.75
+  kx: u + 0.5    # Key spacing horizontal
+  ky: u + 0.5    # Key spacing vertical
+  thumb_offsetx: 0.25kx
+  xiao_x: 17.5
+  xiao_y: 21
+  outx: 0.5capx +1  # Used for plate outlines
+  outy: 0.5capy +1  # Used for plate outlines
+  mirshift: 38
+
+points:
+  zones:
+  # Key matrix
+  zones.matrix:
+    anchor:
+      shift: [100,-100]
+    mirror:
+      ref: matrix_inner_home
+      shift: mirshift
+    key:
+      width: capx
+      height: capy
+      spread: u      
+      padding: u
+      autobind: 0
+    rows:
+      bottom:
+        bind: [1, 60, 1, 1]
+      home:
+        bind: [1, 1, 0, 1]
+      top:
+        bind: [1, 1, 0, 1]
+    columns:
+      pinky:
+        key:
+          rows:
+            bottom:
+            home:
+            top:
+      ring:
+        key:
+          stagger: 0.65U
+        rows:
+          bottom:
+          home:
+          top:
+      middle:
+        key:
+          stagger: 0.25U
+        rows:
+          bottom:
+            bind: [1,1,1,1]
+          home:
+          top:
+      index:
+        key:
+          stagger: -0.25U
+        rows:
+          bottom:
+            bind: [1,1,1,1]
+          home:
+          top:
+      inner:
+        key:
+          stagger: 0.5ky
+        rows:
+          top.skip: true
+          bottom:
+            bind: [1,2,20,1]
+          home:
+  # Thumb matrix
+  zones.thumb:
+    anchor:
+      ref: matrix_index_top
+      shift: [0.6u,-63]
+      rotate: -20
+    mirror:
+      ref: matrix_inner_home
+      shift: mirshift
+    key:
+      width: capx
+      height: capy
+      autobind: 0
+    rows:
+      home:
+    columns:
+      left.key:
+        name: thumb_tucky
+        bind: [0,1,1,1] # U,R,D,L
+      right.key:
+        spread: kx+0.2
+        stagger: 0.2kx
+        rotate: -95
+        name: thumb_reachy
+        bind: [1,1,2,1.2191] # R,D,L,U
+
+  # MCU
+  zones.mcu:
+    anchor:
+      ref: matrix_inner_home
+      shift: [19.5,-.5]
+      rotate: 0
+    mirror: 
+      ref: matrix_inner_home
+      shift: mirshift
+    key:
+      name: mcu
+      width: xiao_x+1
+      height: xiao_y+1
+      autobind: 0
+  # Power slider
+  zones.pcm12:
+    anchor:
+      - ref: mcu
+        shift: [0.5xiao_x+0.3, -1.1xiao_y]
+        rotate: 0
+    key:
+      name: pcm12
+      height: 2.6
+      width: 6.7
+    mirror:
+      ref: matrix_inner_home
+      shift: mirshift
+
+outlines:
+  # Cutouts for the case/plate
+  _casecuts:
+    - what: rectangle
+      where:
+        - /matrix_.*/
+        - /thumb_.*/
+      size: 13.9
+      bound: false
+
+  # Used for making the pcb outline from keys using bind
+  _keycapsbound:
+    - what: rectangle
+      where:
+        - /matrix_.*/
+        - /thumb_tucky/
+      size: [capx, capy]
+      bound: true
+    - what: rectangle
+      where:
+        - /thumb_reachy/
+      size: [thumbcapx, capy]
+      bound: true
+
+  # Used for visualising stuff in preview
+  _keycapsunbound:
+    - what: rectangle
+      where:
+        - /matrix_.*/
+        - /thumb_tucky/
+      size: [capx, capy]
+      bound: false
+    - what: rectangle
+      where:
+        - /thumb_reachy/
+      size: [thumbcapx, capy]
+      bound: false
+    - what: rectangle
+      where:
+        - /mcu/
+      size: [xiao_x,xiao_y]
+      bound: false
+      fillet: 1
+  _mcu:
+    - what: rectangle
+      where: /mcu/
+      size: [xiao_x, xiao_y]
+      fillet: 1
+  _diodes:
+    - what: rectangle
+      where: 
+        - /^matrix_.*/
+        - /^thumb_.*/
+      size: [2,1]
+      adjust.shift: [-7.5,7.5]
+    - what: rectangle
+      where:
+        - /mirror_matrix_.*/
+        - /mirror_thumb_.*/
+      size: [2,1]
+      adjust.shift: [8,8]
+  _powerslider:
+    - what: rectangle
+      where: /pcm12/
+      size: [2.6,6.2]
+
+  # Janky way of adding the shape around the mcu to meet the thumb outline
+  _mcu_extra:
+    - what: polygon
+      bound: true
+      operation: stack
+      points:
+        - ref: matrix_inner_home
+          shift: [0.5capx, 0.5capy+1]
+        - ref: matrix_inner_home
+          shift: [30, 0.5capy+1]
+        - ref: thumb_reachy
+          shift: [-15,0]
+          affect: y
+        - ref: thumb_reachy
+          orient: -95
+          shift: [-0.5capy-1,0]
+        - ref: thumb_reachy
+          orient: -95
+          shift: 10
+  _mcu_extra_mirror:
+    - what: polygon
+      bound: true
+      operation: stack
+      points:
+        - ref: mirror_matrix_inner_home
+          shift: [0.5capx, 0.5capy+1]
+        - ref: mirror_matrix_inner_home
+          shift: [30, 0.5capy+1]
+        - ref: mirror_thumb_reachy
+          shift: [-15,0]
+          affect: y
+        - ref: mirror_thumb_reachy
+          orient: -95
+          shift: [-0.5capy-1,0]
+        - ref: mirror_thumb_reachy
+          orient: -95
+          shift: 10
+
+  # Small shape to remove slight overhangs from jank and make the edge cuts work (there are probably better ways to do this)
+  _thumbcut:
+    - what: rectangle
+      where:
+        - ref: thumb_reachy
+          shift: [1,11]
+      size: [45,2]
+  _thumbcut_mirror:
+    - what: rectangle
+      where:
+        - ref: mirror_thumb_reachy
+          shift: [1,11]
+      size: [45,2]
+
+  # Define the plate ready for fillet
+  _platecut:
+    - ^_keycapsbound
+    - _mcu_extra
+    - _mcu_extra_mirror
+    - -_thumbcut_mirror
+    - -_thumbcut
+  
+  # Main outine for PCB
+  plate:
+    - name: _platecut
+      fillet: 2
+
+  # Non-fillet DXF for case design in Fusion 360
+  squareplate: 
+    - name: _platecut
+
+  # Full preview in webUI
+  preview:
+    - ^plate
+    - ^_keycapsunbound
+    - ^_mountholes
+    - ^_thumbcut
+    - ^_thumbcut_mirror
+    - ^_powerslider
+    - ^_mcu_extra
+    - ^_diodes
+
+  # Various DXF files for use in case design
+  case:
+    - ^plate
+    - ^_casecuts
+    - ^_mcu
+  keyplate:
+    - name: _platecut
+      fillet: 2
+    - ^_casecuts
+  _keywellparts:
+    - what: rectangle
+      where: /matrix*/
+      size: [capx+2,capy+2]
+    - what: rectangle
+      where: /thumb_tu*/
+      size: [capx+3,capy+2]
+      adjust.shift: [0.5,0]
+    - what: rectangle
+      where: /thumb_reachy/
+      size: [thumbcapx+2,capy+2]
+      adjust.shift: [0,0]
+  keywells:
+    - name: _keywellparts
+      fillet: 2
+  keywellwithkeys:
+    - ^keywells
+    - ^_keycapsunbound
+  casesketch: 
+    - name: _platecut
+      fillet: 2
+      expand: 3>
+    - name: _casecuts
+      operation: stack
+    - name: keywells
+      operation: stack
+
+  # Initial design for gasket mount plate - not used in the end
+  mounts:
+    - what: rectangle
+      where: /middle_top*/
+      size: [17,3]
+      adjust.shift: [0,0.63capy]
+    - what: rectangle
+      where: /thumb_reachy*/
+      size: [20,3]
+      adjust.shift: [0,0.63capy]
+    - what: rectangle
+      where: /thumb_reachy*/
+      size: [3,15]
+      adjust.shift: [0.59thumbcapx,0]
+    - what: rectangle
+      where: /pinky_home*/
+      size: [3,50]
+      adjust.shift: [-0.63capx,0]
+    - what: rectangle
+      where: /inner_bottom*/
+      size: [3,40]
+      adjust.shift: [31.5,3]
+    - what: rectangle
+      where: /inner_home*/
+      size: [30,3]
+      adjust.shift: [10,0.63capy]
+    - what: rectangle
+      where: /pinky_bottom*/
+      size: [40,3]
+      adjust.shift: [25,-0.63capy]
+    - name: plate
+    - ^_casecuts
+
+
+pcbs.nostrumX_MX:
+  outlines.main:
+    outline: plate
+  footprints:
+    - what: mx
+      where:
+        - /^matrix_.*/
+        - /^thumb_.*/
+      params:
+        from: "x"
+        to: "x"
+        reverse: false
+        hotswap: true
+        designator: "SW"
+    - what: mx
+      where:
+        - /mirror.matrix_.*/
+        - /mirror.thumb_.*/
+      params:
+        from: "x"
+        to: "x"
+        reverse: false
+        hotswap: true
+        designator: "SW"
+    - what: combo_diode
+      where:
+        - /^matrix_.*/
+        - /^thumb_.*/
+      params:
+        from: "x"
+        to: "x"
+        include_tht: false
+      adjust:
+        shift: [-7, 8]
+    - what: combo_diode
+      where:
+        - /mirror.matrix_.*/
+        - /mirror.thumb_.*/
+      params:
+        from: "x"
+        to: "x"
+        include_tht: false
+      adjust:
+        shift: [7, 8]
+    - what: xiao_smd
+      where:
+        - /mcu/
+      params:
+        side: F
+    - what: switch_power
+      where:
+        - /^pcm12/
+      params:
+        from: pos
+        to: RAW
+        side: F
+    - what: switch_power
+      where:
+        - /mirror.pcm12/
+      params:
+        from: pos
+        to: RAW
+        side: F
+      adjust.rotate: 180
