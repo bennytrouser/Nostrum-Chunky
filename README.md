@@ -19,7 +19,9 @@ An MX Spaced 32 key Split KB using Seeed Xiao BLE.
 ## Design
 Iniitially I just wanted to make a simple MX version of the NostrumX, but this ended up with a new case design with a gasket mounted 3dp plate. I also removed the splay that I decided was not required with the extra spacing from the MX layout.
 
-I tried various foam and plate options and settled on just 0.5mm ixpe switch pads and silicone gaskets on the plate. I tried a thinner plate which created more flex, but I hated the bouncy feedback, so I went with a 3mm plate, printed with 100% infill. This seems to have created a really great sound and typing feel with the switches I chose - Akko Mirrors, which convieniently match the case. 
+I tried various foam and plate options and settled on just 0.5mm ixpe switch pads and silicone gaskets on the plate. I tried a thinner plate which created more flex, but I hated the bouncy feedback, so I went with a 3mm plate, printed with 100% infill. This seems to have created a really great sound and typing feel with the switches I chose - Akko Mirrors, which convieniently match the case.
+
+Note - Akko switches are usually a little smaller than most, so for other switches, make sure to use the loose version of the plates (these use a 13.97 hole rather than the 13.9 for the Akko).
 
 The case is joins together with 3x2 magnets for easy disassembly and access to the hidden power switch when required.
 
